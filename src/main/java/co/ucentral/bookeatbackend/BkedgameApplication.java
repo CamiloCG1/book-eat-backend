@@ -1,4 +1,4 @@
-package co.ucentral.bkedgame;
+package co.ucentral.bookeatbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
