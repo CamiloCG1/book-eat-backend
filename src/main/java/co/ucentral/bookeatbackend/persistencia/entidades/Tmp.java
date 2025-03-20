@@ -1,4 +1,4 @@
-package co.ucentral.bkedgame.persistencia.entidades;
+package co.ucentral.bookeatbackend.persistencia.entidades;
 
 import jakarta.persistence.*;
 

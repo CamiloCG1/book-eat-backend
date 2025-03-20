@@ -1,4 +1,4 @@
-package co.ucentral.bkedgame.servicios;
+package co.ucentral.bookeatbackend.servicios;
 
 import org.springframework.stereotype.Service;
 
