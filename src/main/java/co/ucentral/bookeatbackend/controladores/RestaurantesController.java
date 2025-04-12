@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -20,5 +21,10 @@ public class RestaurantesController {
     @PostMapping("")
     public RestauranteDTO crear(@RequestBody RestauranteDTO restaurante){
         return restaurantesServicio.crear(restaurante);
+    }
+
+    @GetMapping("")
+    public List<RestauranteDTO> listarRestaurantes() {
+        return restaurantesServicio.listarTodos();
     }
 }
