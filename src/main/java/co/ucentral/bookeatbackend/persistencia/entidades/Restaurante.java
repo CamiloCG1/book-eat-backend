@@ -29,6 +29,8 @@ public class Restaurante {
 
     private String imagenDestacada;
 
+    private String tipoComida;
+
     private LocalDateTime fechaRegistro;
 
     private LocalDateTime fechaUltimaActualizacion;
