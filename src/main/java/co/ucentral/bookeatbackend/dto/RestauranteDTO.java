@@ -5,6 +5,7 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBl
 import java.util.List;
 
 public record RestauranteDTO(
+        Long id,
         @NotBlank String nombre,
         String descripcion,
         String ciudad,

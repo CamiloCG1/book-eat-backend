@@ -34,7 +34,7 @@ public class UsuariosServicio {
 
         if (usuario.isPresent() && usuario.get().getContrasena().equals(contrasena)) {
             Usuario u = usuario.get();
-            return new UsuarioDTO(u.getUsuario(), u.getCorreo(), null);
+            return new UsuarioDTO(u.getId(), u.getUsuario(), u.getCorreo(), null);
         }
 
         return null;

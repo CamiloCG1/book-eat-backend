@@ -38,6 +38,7 @@ public class RestaurantesServicio {
         List<Restaurante> restaurantes = restaurantesRepositorio.findAll();
 
         return restaurantes.stream().map(r -> new RestauranteDTO(
+                r.getId(),
                 r.getNombre(),
                 r.getDescripcion(),
                 r.getCiudad(),
