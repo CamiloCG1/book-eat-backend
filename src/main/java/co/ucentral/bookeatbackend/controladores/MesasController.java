@@ -1,5 +1,6 @@
 package co.ucentral.bookeatbackend.controladores;
 
+import co.ucentral.bookeatbackend.dto.MesaDTO;
 import co.ucentral.bookeatbackend.persistencia.entidades.Mesa;
 import co.ucentral.bookeatbackend.servicios.MesasServicio;
 import lombok.AllArgsConstructor;
@@ -40,11 +41,7 @@ public class MesasController {
      * Crear una nueva mesa para un restaurante
      */
     @PostMapping("")
-    public Mesa crearMesa(
-            @RequestParam Long restauranteId,
-            @RequestParam int numero,
-            @RequestParam int capacidad
-    ) {
-        return mesasServicio.crearMesa(restauranteId, numero, capacidad);
+    public Mesa crearMesa(@RequestBody MesaDTO mesaDTO) {
+        return mesasServicio.crearMesa(mesaDTO.getRestauranteId(), mesaDTO.getNumero(), mesaDTO.getCapacidad());
     }
 }
