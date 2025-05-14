@@ -7,5 +7,6 @@ public record ReservaDTO(
         LocalDateTime fechaHora,
         int numeroPersonas,
         Long usuarioId,
-        Long restauranteId
+        Long restauranteId,
+        Long mesaId
 ) {}
