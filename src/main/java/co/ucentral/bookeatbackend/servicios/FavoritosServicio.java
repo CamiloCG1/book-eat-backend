@@ -7,6 +7,7 @@ import co.ucentral.bookeatbackend.persistencia.entidades.Usuario;
 import co.ucentral.bookeatbackend.persistencia.repositorios.FavoritosRepositorio;
 import co.ucentral.bookeatbackend.persistencia.repositorios.RestaurantesRepositorio;
 import co.ucentral.bookeatbackend.persistencia.repositorios.UsuariosRepositorio;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,7 @@ public class FavoritosServicio {
         return new FavoritoDTO(favorito.getId(), usuario.getId(), restaurante.getId());
     }
 
+    @Transactional
     public void eliminarFavorito(Long usuarioId, Long restauranteId) {
         favoritosRepositorio.deleteByUsuarioIdAndRestauranteId(usuarioId, restauranteId);
     }

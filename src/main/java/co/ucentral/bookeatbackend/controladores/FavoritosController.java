@@ -21,8 +21,8 @@ public class FavoritosController {
     }
 
     @DeleteMapping("")
-    public void eliminarFavorito(@RequestBody FavoritoDTO dto) {
-        favoritosServicio.eliminarFavorito(dto.usuarioId(), dto.restauranteId());
+    public void eliminarFavorito(@RequestParam Long usuarioId, @RequestParam Long restauranteId) {
+        favoritosServicio.eliminarFavorito(usuarioId, restauranteId);
     }
 
     @GetMapping("/usuario/{usuarioId}")
