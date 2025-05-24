@@ -12,10 +12,14 @@ import co.ucentral.bookeatbackend.persistencia.repositorios.MesasRepositorio;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @AllArgsConstructor
@@ -133,4 +137,54 @@ public class ReservasServicio {
         }
         reservasRepositorio.deleteById(reservaId);
     }
+
+    public List<String> obtenerHorariosDisponibles(Long restauranteId, String fechaStr) {
+        Optional<Restaurante> restauranteOpt = restaurantesRepositorio.findById(restauranteId);
+        if (restauranteOpt.isEmpty()) {
+            throw new IllegalArgumentException("Restaurante no encontrado");
+        }
+
+        LocalDate fecha;
+        try {
+            fecha = LocalDate.parse(fechaStr); // Formato esperado: "2025-05-23"
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Fecha con formato inválido");
+        }
+
+        // Define el rango horario (ej. de 12:00 a 22:00 cada 1 hora)
+        List<LocalTime> posiblesHoras = IntStream.rangeClosed(12, 22)
+                .mapToObj(hora -> LocalTime.of(hora, 0))
+                .toList();
+
+        LocalDateTime inicioDia = fecha.atStartOfDay();
+        LocalDateTime finDia = fecha.atTime(LocalTime.MAX);
+        List<Reserva> reservasDelDia = reservasRepositorio.findByRestauranteAndFechaHoraBetween(
+                restauranteOpt.get(), inicioDia, finDia
+        );
+
+        if (reservasDelDia.isEmpty()) {
+            return posiblesHoras.stream().map(LocalTime::toString).toList();
+        }
+
+        List<Mesa> mesas = mesasRepositorio.findByRestauranteId(restauranteId);
+        List<Reserva> reservas = reservasRepositorio.findByRestaurante(restauranteOpt.get());
+
+        List<String> horariosDisponibles = new ArrayList<>();
+
+        for (LocalTime hora : posiblesHoras) {
+            LocalDateTime fechaHora = LocalDateTime.of(fecha, hora);
+            boolean algunaMesaDisponible = mesas.stream().anyMatch(mesa ->
+                    reservas.stream().noneMatch(reserva ->
+                            reserva.getMesa().getId().equals(mesa.getId()) &&
+                                    reserva.getFechaHora().equals(fechaHora)
+                    )
+            );
+            if (algunaMesaDisponible) {
+                horariosDisponibles.add(hora.toString());
+            }
+        }
+
+        return horariosDisponibles;
+    }
+
 }

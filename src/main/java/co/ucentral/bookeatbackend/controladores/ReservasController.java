@@ -39,4 +39,11 @@ public class ReservasController {
     public void cancelar(@PathVariable Long reservaId) {
         reservasServicio.cancelar(reservaId);
     }
+
+    @GetMapping("/disponibilidad")
+    public List<String> consultarHorariosDisponibles(
+            @RequestParam Long restauranteId,
+            @RequestParam String fecha) {
+        return reservasServicio.obtenerHorariosDisponibles(restauranteId, fecha);
+    }
 }
