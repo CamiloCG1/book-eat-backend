@@ -29,4 +29,14 @@ public class ReservasController {
     public List<ReservaDTO> listarPorRestaurante(@PathVariable Long restauranteId) {
         return reservasServicio.listarPorRestaurante(restauranteId);
     }
+
+    @PutMapping("/{reservaId}")
+    public ReservaDTO actualizar(@PathVariable Long reservaId, @RequestBody ReservaDTO dto) {
+        return reservasServicio.actualizar(reservaId, dto);
+    }
+
+    @DeleteMapping("/{reservaId}")
+    public void cancelar(@PathVariable Long reservaId) {
+        reservasServicio.cancelar(reservaId);
+    }
 }

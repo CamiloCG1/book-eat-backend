@@ -97,4 +97,40 @@ public class ReservasServicio {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public ReservaDTO actualizar(Long reservaId, ReservaDTO dto) {
+        Reserva reserva = reservasRepositorio.findById(reservaId)
+                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
+
+        Mesa mesa = mesasRepositorio.findById(dto.mesaId())
+                .orElseThrow(() -> new IllegalArgumentException("Mesa no encontrada"));
+
+        if (!mesa.getRestaurante().getId().equals(dto.restauranteId())) {
+            throw new IllegalArgumentException("La mesa no pertenece al restaurante");
+        }
+
+        boolean estaOcupada = reservasRepositorio.findAll().stream()
+                .anyMatch(r -> !r.getId().equals(reservaId) &&
+                        r.getMesa().getId().equals(mesa.getId()) &&
+                        r.getFechaHora().equals(dto.fechaHora()));
+
+        if (estaOcupada) {
+            throw new IllegalStateException("La mesa ya está reservada en esa fecha y hora");
+        }
+
+        reserva.setFechaHora(dto.fechaHora());
+        reserva.setNumeroPersonas(dto.numeroPersonas());
+        reserva.setMesa(mesa);
+
+        Reserva actualizada = reservasRepositorio.save(reserva);
+        return new ReservaDTO(actualizada.getId(), actualizada.getFechaHora(), actualizada.getNumeroPersonas(),
+                actualizada.getUsuario().getId(), actualizada.getRestaurante().getId(), actualizada.getMesa().getId());
+    }
+
+    public void cancelar(Long reservaId) {
+        if (!reservasRepositorio.existsById(reservaId)) {
+            throw new IllegalArgumentException("Reserva no encontrada");
+        }
+        reservasRepositorio.deleteById(reservaId);
+    }
 }
